@@ -17,8 +17,8 @@
 Send PEW meet the tier required to your MN wallet. It needs 20-30 minutes for transaction confirmation (At least 15 confirms).
  
 ## Two Options for Setting up your Wallet
-1. [One GUI wallet control multiple masternodes on VPS.] (recommended if you are consolidating wallets).](#option1)
-  
+1. [One GUI wallet control multiple masternodes on VPS.] (#option1)
+  (recommended if you are consolidating wallets).]
 2. [Induvidal wallet](#option2) 
 
 ## <a name="option1"></a>Option 1. One GUI wallet control multiple masternodes on VPS.

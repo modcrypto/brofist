@@ -1,26 +1,69 @@
-#start-many Setup Guide
+# Brofist Master Nodes Setup Guide
 
+**Please, update your brofist wallet to the latest version:** https://github.com/modcrypto/brofist/releases
+
+<img src="https://docs.google.com/drawings/d/e/2PACX-1vSxM_rihB5b6L-E5xOknGS-UFovfTpFYIzjSOCWkAbqv4QLYXyADB6wwx6IpUQ-ETzIPLFeHVaT5Qft/pub?w=892&amp;h=453">
+
+## Multi-Level Master Node 
+|Tier	| PEW Require	| MN Reward |
+|-----|--------------|-----------|
+| 1	| 1,250 PEW	  	|   6.67%   |
+| 2	| 2,500 PEW	   |	13.33%   |
+| 3	| 5,000 PEW	   |	26.67%   |
+| 4	| 10,000 PEW	|	53.33%   |
+| 5	| 20,000 PEW	|	66.67%   |
+| 6	| 50,000 PEW	|	80.00%   |
+
+Send PEW meet the tier required to your MN wallet. It needs 20-30 minutes for transaction confirmation (At least 15 confirms).
+ 
 ## Two Options for Setting up your Wallet
-There are many ways to setup a wallet to support start-many. This guide will walk through two of them.
+1. [One GUI wallet control multiple masternodes on VPS.] (recommended if you are consolidating wallets).](#option1)
+  
+2. [Induvidal wallet](#option2) 
 
-1. [Importing an existing wallet (recommended if you are consolidating wallets).](#option1)
-2. [Sending 1000 PEW to new wallet addresses.](#option2)
-
-## <a name="option1"></a>Option 1. Importing an existing wallet
+## <a name="option1"></a>Option 1. One GUI wallet control multiple masternodes on VPS.
 
 This is the way to go if you are consolidating multiple wallets into one that supports start-many. 
 
-### From your single-instance Masternode Wallet
+1. Install new wallet.
 
-Open your QT Wallet and go to console (from the menu select `Tools` => `Debug Console`)
-
-Dump the private key from your MasterNode's pulic key.
-
+You must install one Brofist wallet on each VPS.  **Each Brofist masternode needs an unique IP address.** 
+There are 2 options:  1) brofist-qt (GUI) or 2) brofistd (Daemon No-GUI control via RPC)
+ 
+1.1 For Windows (recommend to use brofist-qt)
+- Open your QT Wallet 
+- Wait Until blockchain and masternode synced.
+- Go to Menu: Files/Receiving Address  and copy the address
+1.2 For Linux  (recommend to use brofistd) 
+- start the wallet daemon with command: 
+```  
+  ./brofistd 
 ```
-walletpassphrase [your_wallet_passphrase] 600
-dumpprivkey [mn_public_key]
+  and wait until the wallet synce.
+- You can view information of this wallet with command:
+```  
+  ./brofist-cli getinfo 
 ```
+- Generate new Brofist wallet address with command:
+```  
+  ./brofist-cli getnewaddress  
+```
+copy the resulting wallet address  
 
+2. Send the coin to new wallet address in step 1.
+Please see the above table for the requirement PEW for each masternode level. 
+You needs to wait 20-30 minutes for transaction confirmation (At least 15 confirms).
+
+3. Dump the private key from your MasterNode's pulic key.
+- For QT wallet(Windows), goto menu Tools/Debug Console
+and type the command:
+```
+dumpprivkey [the wallet address]
+```
+- For daemon wallet(Linux), type the command:
+```
+brofist-cli dumpprivkey [the wallet address]
+```
 Copy the resulting priviate key. You'll use it in the next step.
 
 ### From your multi-instance Masternode Wallet

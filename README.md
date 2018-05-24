@@ -22,7 +22,7 @@ Tools
 -------------
 * Website: http://www.brofist.online 
 * Official Pool : http://pool.brofist.online/
-* Block Explorer : https://pew.overemo.com/
+* Block Explorer : http://explorer.brofist.online/
 * Bitcointalk ANN : https://bitcointalk.org/index.php?topic=3943730.msg37670155
 
 * Exchange: 

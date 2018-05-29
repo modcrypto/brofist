@@ -9,7 +9,7 @@ I make this fork to look after it, and make it to be the community stable and re
 
 - Maximum Supply: 31,000,000 coins
 - Algorithm: NeoScrypt
-- Type: PoW + MasterNode
+- Type: PoW + MasterNode (Multi-Levels 1250,2500,5000,10000,20000,50000 )
 - Coin name: BroFist Coin
 - Coin abbreviation: PEW
 - Block Time Average: 120 sec
@@ -20,52 +20,38 @@ I make this fork to look after it, and make it to be the community stable and re
 
 Tools
 -------------
-* Block Explorer : https://pew.overemo.com/
-* Bitcointalk ANN : https://bitcointalk.org/index.php?topic=3025770.80 
-* Website: http://brofist-coin.firebaseapp.com  (coming soon)
+* Website: http://www.brofist.online 
+* Official Pool : http://pool.brofist.online/
+* Block Explorer : http://explorer.brofist.online/
+* Bitcointalk ANN : https://bitcointalk.org/index.php?topic=3943730.msg37670155
+
 * Exchange: 
   - Graviex - https://graviex.net/markets/pewbtc
   - BarterDEX - https://komodoplatform.com/decentralized-exchange/
     To use BarterDEX, you must set **rpcport=12454** in brofist.conf 
 
-* Discord: (Old) https://discord.gg/p2rsNEb  (New) https://discord.gg/QBTgeMZ
+* Discord: (New) https://discord.gg/QBTgeMZ
 
-Downloads
-----------------
-* [Windows 32 Wallet](https://github.com/modcrypto/brofist/releases/download/1.1/brofist32-qt.1.2.zip) (Stable)
-* [Linux Wallet](https://github.com/modcrypto/brofist/releases/download/1.1/brofishd_ubuntu.1.1.tar.gz)
-* MacOS Wallet
-* [Blockchain](https://github.com/modcrypto/brofist/releases/download/1.0/brofist_blockchain_24176.zip) 1 - 24176 blocks
 
-How to Repair Your Masternode
+How to Update Your Masternode
 ------------------------
 1. Close your BroFist wallet.
-2. Delete everything from the folder <USER_FOLDER>\AppData\Roaming\BroFistCore (for windows), 
+2. Download the latest version of Brofist wallet.
+3. Delete everything from the folder <USER_FOLDER>\AppData\Roaming\BroFistCore (for windows), 
    EXCEPT wallet.dat, brofist.conf, masternode.conf and backup folder.
 
 ![Sample Screen](/doc/brofist_doc/step1.png)
 
 Be extremely careful not to delete wallet.dat, or you may loose all your coins.
 
-3. Then you need to add nodes that are 100% sure on the right chain to your brofist.conf file :
-Code: Last update 13-04-2018 
+4. Then you need to remove addnode that are 100% sure on the right chain to your brofist.conf file :
 ```ini
 maxconnections=30
-addnode=pew.overemo.com
-addnode=173.249.9.82
-addnode=207.148.119.112
-addnode=198.13.62.66
-addnode=185.5.251.7
-addnode=212.237.25.226
-addnode=185.148.39.82
-addnode=90.189.149.194
-addnode=176.62.66.106
-addnode=45.77.198.234
 
 ```
 Please don't make maxconnections number higher than 30, or you might desync again.
 
-4. Open your BroFist wallet again.
+5. Open your BroFist wallet again.
 
 Master Node Guide
 ----------------

@@ -303,6 +303,15 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int nBlockH
     }else{
        CMasternode *winningNode= NULL;
        winningNode = mnodeman.Find(payee);    
+       if(!winningNode) {
+          int nCount = 0;
+          winningNode = mnodeman.GetNextMasternodeInQueueForPayment(nBlockHeight, true, nCount);
+          payee = GetScriptForDestination(winningNode->pubKeyCollateralAddress.GetID());
+       }
+       if(!winningNode) {
+            LogPrintf("CMasternodePayments::FillBlockPayee -- Failed to detect masternode to pay\n");
+            return;
+       }
        masternodeCoin = winningNode->getCollateralValue();   
     }
 

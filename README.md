@@ -13,9 +13,9 @@ I make this fork to look after it, and make it to be the community stable and re
 - Coin name: BroFist Coin
 - Coin abbreviation: PEW
 - Block Time Average: 120 sec
-- Block Reward: 0-150 - 1 PEW, 150-250 - 3 PEW, 250+ - 12 PEW. 
-- Block Reward Distribution: 6 PEW to Masternodes, 6 PEW to Miners
-- Premine: 1% (300,000 PEW with [Ex-Developer] https://github.com/brofistnetwork/brofist )
+- Block Reward: 36 PEW.  
+- Block Reward Distribution: Vary by Masternode Collateral. AverageShare is Miner 70%, Masternode 30%
+- Premine: 1% (300,000 PEW, had been blocked 200,000 PEW)
 - Port P2P:***11113** RPC:**12454***
 
 Tools
@@ -23,7 +23,7 @@ Tools
 * Website: http://www.brofist.online 
 * Official Pool : http://pool.brofist.online/
 * Block Explorer : http://explorer.brofist.online/
-* Bitcointalk ANN : https://bitcointalk.org/index.php?topic=3943730.msg37670155
+* Bitcointalk ANN : https://bitcointalk.org/index.php?topic=3943730
 
 * Exchange: 
   - Graviex - https://graviex.net/markets/pewbtc
@@ -55,7 +55,7 @@ Please don't make maxconnections number higher than 30, or you might desync agai
 
 Master Node Guide
 ----------------
-* [Setting Multiple Masternodes on Ubuntu VPS](https://github.com/modcrypto/brofist/blob/master/doc/masternode_multi.md)
+* Coming Soon
 
 
 License

@@ -597,6 +597,10 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
     //require at least MNPAYMENTS_SIGNATURES_REQUIRED signatures
 
     BOOST_FOREACH(CMasternodePayee& payee, vecPayees) {
+        CMasternode *mnode = mnodeman.Find(payee.GetPayee());
+        if(mnode==NULL) continue;
+        if(!mnode->IsValidForPayment()) continue;
+        
         if (payee.GetVoteCount() >= nMaxSignatures) {
             nMaxSignatures = payee.GetVoteCount();
         }
@@ -609,12 +613,18 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
   
     BOOST_FOREACH(CMasternodePayee& payee, vecPayees) {
         if (payee.GetVoteCount() >= MNPAYMENTS_SIGNATURES_REQUIRED) {
-            CMasternode *mnode = mnodeman.Find(payee.GetPayee());
-            if(mnode==NULL) continue;
-            nMasternodePayment = GetMasternodePayment(nBlockHeight, txNew.GetValueOut(), mnode->getCollateralValue());
             BOOST_FOREACH(CTxOut txout, txNew.vout) {
-                if (payee.GetPayee() == txout.scriptPubKey && nMasternodePayment == txout.nValue) {
-                    LogPrint("mnpayments", "CMasternodeBlockPayees::IsTransactionValid -- Found required payment\n");
+                if (payee.GetPayee() == txout.scriptPubKey) {
+                    CMasternode *mnode = mnodeman.Find(payee.GetPayee());
+                    if(mnode!=NULL){
+                      nMasternodePayment = GetMasternodePayment(nBlockHeight, txNew.GetValueOut(), mnode->getCollateralValue());
+                      if (nMasternodePayment == txout.nValue) {
+                         LogPrint("mnpayments", "CMasternodeBlockPayees::IsTransactionValid -- Found required payment\n");
+                         return true;
+                      }
+                      LogPrintf("CMasternodeBlockPayees::IsTransactionValid -- WARNING: reward %f != expect reward %f PEW\n", (float)txout.nValue/COIN, (float)nMasternodePayment/COIN);   
+                    }
+                    LogPrintf("CMasternodeBlockPayees::IsTransactionValid masternode is null.\n");
                     return true;
                 }
             }
@@ -630,8 +640,15 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
         }
         //***    
     }
-    
-    LogPrintf("CMasternodeBlockPayees::IsTransactionValid -- ERROR: Missing required payment, possible payees: '%s', amount: %f PEW, vote:%d\n", strPayeesPossible, (float)nMasternodePayment/COIN, nMaxSignatures);   
+    CTxDestination paddress1;
+    std::string strPayees = "";
+    BOOST_FOREACH(CTxOut txout, txNew.vout) {
+      ExtractDestination(txout.scriptPubKey, paddress1);
+      CBitcoinAddress paddress2(paddress1);
+      strPayees += paddress2.ToString() + ",";
+    }
+
+    LogPrintf("CMasternodeBlockPayees::IsTransactionValid -- ERROR: Missing required payment payees:%s, possible payees: '%s', amount: %f PEW, vote:%d\n",strPayees, strPayeesPossible, (float)nMasternodePayment/COIN, nMaxSignatures);   
     return false;
 }
 

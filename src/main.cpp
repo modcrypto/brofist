@@ -3025,10 +3025,12 @@ void static UpdateTip(CBlockIndex *pindexNew) {
     nTimeBestReceived = GetTime();
     mempool.AddTransactionsUpdated(1);
 
-    LogPrintf("%s: new best=%s  height=%d  log2_work=%.8g  tx=%lu  date=%s progress=%f  cache=%.1fMiB(%utx)\n", __func__,
+    LogPrintf("%s: new best=%s  height=%d  log2_work=%.8g  tx=%lu  date=%s progress=%f  cache=%.1fMiB(%utx) timestamp=%u\n", __func__,
       chainActive.Tip()->GetBlockHash().ToString(), chainActive.Height(), log(chainActive.Tip()->nChainWork.getdouble())/log(2.0), (unsigned long)chainActive.Tip()->nChainTx,
       DateTimeStrFormat("%Y-%m-%d %H:%M:%S", chainActive.Tip()->GetBlockTime()),
-      Checkpoints::GuessVerificationProgress(chainParams.Checkpoints(), chainActive.Tip()), pcoinsTip->DynamicMemoryUsage() * (1.0 / (1<<20)), pcoinsTip->GetCacheSize());
+      Checkpoints::GuessVerificationProgress(chainParams.Checkpoints(), chainActive.Tip()), pcoinsTip->DynamicMemoryUsage() * (1.0 / (1<<20)), pcoinsTip->GetCacheSize(),
+      chainActive.Tip()->GetBlockTime()
+      );
 
     cvBlockChange.notify_all();
 
@@ -3945,14 +3947,8 @@ static bool AcceptBlockHeader(const CBlockHeader& block, CValidationState& state
         static int prevblock_errorcount = 0;
         if (pindexPrev->nStatus & BLOCK_FAILED_MASK){
             prevblock_errorcount++;
-            if(prevblock_errorcount>3){
-               pindexPrev = chainActive.Tip()->pprev; 
-               UpdateTip(pindexPrev); 
-               LogPrint("net", "found invalid header %d times, UpdateTipToPrev block: %d \n",prevblock_errorcount, pindexPrev->nHeight);
-            }
-            return state.DoS(100, error("%s: prev block invalid", __func__), REJECT_INVALID, "bad-prevblk");
+            return state.DoS(100, error("%s: prev block invalid count=%d ", __func__, prevblock_errorcount ), REJECT_INVALID, "bad-prevblk");
         }
-        prevblock_errorcount=0;
         assert(pindexPrev);
         if (fCheckpointsEnabled && !CheckIndexAgainstCheckpoint(pindexPrev, state, chainparams, hash))
             return error("%s: CheckIndexAgainstCheckpoint(): %s", __func__, state.GetRejectReason().c_str());
@@ -6019,20 +6015,12 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
                     if (nDoS > 0)
                         Misbehaving(pfrom->GetId(), nDoS);
                     nHeaderErrorCount++;    
-                    std::string strError = "invalid header received " + header.GetHash().ToString();
-                    if(nHeaderErrorCount>3){
-                       // *** Wallet will stop if it's on the wrong chain.
-                       // *** Rollback the blockindex to previous block.
-                       CBlockIndex *pindexPrev = chainActive.Tip()->pprev; 
-                       UpdateTip(pindexPrev); 
-                       LogPrint("net", "found invalid header %d times, UpdateTipToPrev block: %d \n",nHeaderErrorCount, pindexPrev->nHeight);
-                    }
-                    return error(strError.c_str());
+                    std::string strError = "invalid header received " + header.GetHash().ToString()+" %d count.";            
+                    return error(strError.c_str(), nHeaderErrorCount);
                 }
             }
         }
-        nHeaderErrorCount=0;    
-
+  
         if (pindexLast)
             UpdateBlockAvailability(pfrom->GetId(), pindexLast->GetBlockHash());
 

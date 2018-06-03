@@ -309,6 +309,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
         if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
             throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
         }
+        LogPrintf("CreateNewBlock : trans=%s \n", pblock->vtx[0].ToString());
     }
 
     return pblocktemplate.release();

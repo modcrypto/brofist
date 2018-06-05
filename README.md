@@ -26,9 +26,12 @@ Tools
 * Bitcointalk ANN : https://bitcointalk.org/index.php?topic=3943730
 
 * Exchange: 
-  - Graviex - https://graviex.net/markets/pewbtc
+  - Ubit.pw https://ubit.pw/markets/brofistbtc
+  
+  <img src="http://www.brofist.online/img/ubit.png">
+
   - BarterDEX - https://komodoplatform.com/decentralized-exchange/
-    To use BarterDEX, you must set **rpcport=12454** in brofist.conf 
+  To use BarterDEX, you must set **rpcport=12454** in brofist.conf 
 
 * Discord: (New) https://discord.gg/QBTgeMZ
 

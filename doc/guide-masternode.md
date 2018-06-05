@@ -262,3 +262,6 @@ master3 172.100.21.87:11113 7fAKksjjakksukanoooxlkkaliwolsljsjudjejshjjahhahsjd 
 <img src="brofist_doc/mn_config.png">
 
 Save masternode.conf and restart the wallet.
+
+**Check Your Masternodes Status At **  http://explorer.brofist.online/masternode
+

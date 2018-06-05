@@ -31,7 +31,7 @@ LINUX Setup Guide
 * Brofist Wallet https://github.com/modcrypto/brofist/releases 
 
 ### 1. Steps to Create a New Sudo User
-You can cross this step, if you already have user account.
+You can skip this step, if you already have user account.
 1. Log in to your VPS server as the root user.
 2. Use the adduser command to add a new user to your system.
 3. Use the usermod command to add the user to the sudo group.
@@ -81,7 +81,7 @@ There are 2 options:  1) brofist-qt (GUI) or 2) brofistd (Daemon No-GUI control 
 - Wait Until blockchain and masternode synced.
 - Go to Menu: Files/Receiving Address  and copy the resulting wallet address
 
-1.2 For Linux  (recommend to use brofistd) 
+1.2 For Linux  (recommend to use brofistd and brofist-cli ) 
 - start the wallet daemon with command: 
 ```  
   brofistd -daemon
@@ -90,10 +90,6 @@ There are 2 options:  1) brofist-qt (GUI) or 2) brofistd (Daemon No-GUI control 
 - You can view information of this wallet with the command:
 ```  
   brofist-cli getinfo 
-```
-- You can stop the brofist daemon with the command:
-```  
-  brofist-cli stop
 ```
 
 1.3 Generate new Brofist wallet address with command:
@@ -208,157 +204,58 @@ brofist-cli dumpprivkey [the wallet address]
 ```
 Copy the resulting priviate key. You'll use it in the next step.
 
-### From your multi-instance Masternode Wallet
+- If you cannot remember the wallet address, type these commands:
+```
+brofist-cli getaccountaddress master
 
-Open your QT Wallet and go to console (from the menu select `Tools` => `Debug Console`)
+# or
+
+brofist-cli masternode status
+
+```
+
+You must dump the private key from all masternode.
+
+
+2. Open your QT Wallet and go to console (from the menu select `Tools` => `Debug Console`)
 
 Import the private key from the step above.
 
 ```
-walletpassphrase [your_wallet_passphrase] 600
-importprivkey [single_instance_private_key]
+importprivkey [masternode_private_key_from_step1] [masternode_name] [true/false]
 ```
 
-The wallet will re-scan and you will see your available balance increase by the amount that was in the imported wallet.
-
-[Skip Option 2. and go to Create masternode.conf file](#masternodeconf)
-
-## <a name="option2"></a>Option 2. Starting with a new wallet
-
-[If you used Option 1 above, then you can skip down to Create masternode.conf file.](#masternodeconf)
-
-### Create New Wallet Addresses
-
-1. Open the QT Wallet.
-2. Click the Receive tab.
-3. Fill in the form to request a payment.
-    * Label: mn01
-    * Amount: 1000 (optional)
-    * Click *Request payment* button
-5. Click the *Copy Address* button
-
-Create a new wallet address for each Masternode.
-
-Close your QT Wallet.
-
-### Send 1000 PEW to New Addresses
-
-Just like setting up a standard MN. Send exactly 1000 PEW to each new address created above.
-
-### Create New Masternode Private Keys
-
-Open your QT Wallet and go to console (from the menu select `Tools` => `Debug Console`)
-
-Issue the following:
-
-```masternode genkey```
-
-*Note: A masternode private key will need to be created for each Masternode you run. You should not use the same masternode private key for multiple Masternodes.*
-
-Close your QT Wallet.
-
-## <a name="masternodeconf"></a>Create masternode.conf file
-
-Remember... this is local. Make sure your QT is not running.
-
-Create the `masternode.conf` file in the same directory as your `wallet.dat`.
-
-Copy the masternode private key and correspondig collateral output transaction that holds the 1000 PEW.
-
-The masternode private key may be an existing key from [Option 1](#option1), or a newly generated key from [Option 2](#option2). 
-
-*Note: The masternode priviate key is **not** the same as a wallet private key. **Never** put your wallet private key in the masternode.conf file. That is almost equivalent to putting your 1000 PEW on the remote server and defeats the purpose of a hot/cold setup.*
-
-### Get the collateral output
-
-Open your QT Wallet and go to console (from the menu select `Tools` => `Debug Console`)
-
-Issue the following:
-
-```masternode outputs```
-
-Make note of the hash (which is your collateral_output) and index.
-
-### Enter your Masternode details into your masternode.conf file
-[From the brofist github repo](https://github.com/brofistcoin/brofist/blob/master/doc/masternode_conf.md)
-
-`masternode.conf` format is a space seperated text file. Each line consisting of an alias, IP address followed by port, masternode private key, collateral output transaction id and collateral output index.
-
+For example, if you have 3 masternodes, you should use these command for importing the wallet address.
 ```
-alias ipaddress:port masternode_private_key collateral_output collateral_output_index
+importprivkey WS2zZWyakjsec4ensakkslW9epQxJFBN3HjnnB4q2s412n7HBmGrs master1 false
+importprivkey Zk2zZWyakjsec4ensakksaoaklajlali1alklKaksllskiKakKKSK master2 false
+importprivkey ajkjsIIKKKnajshh18skKAllsksjdnjzjklslioiwkkkakspooakw master3 true
+```
+The wallet will re-scan and you will see your available balance increase by the amount that were in the imported wallets.
+
+3. Config local Brofist masternode.conf
+3.1 Setting your wallet option by enabling "Show Masternodes Tab". (restart wallet after save the setting)
+<img src="brofist_doc/mn_option.png">
+
+3.1 Add the config from all remote masternode.conf to the local masternode.conf
+
+For example, if you have three masternode.
+VPS1: .brofistcore/masternode.conf
+`master 172.100.21.85:11113 7feWwZmYXdCNmYPVwCCLswnx9YBVweafDPHbTM13KMTSfaJQXEq 0eeb81a0ad6b67136e868f6a7820dfc922e9fc1edfc746e0a3f080b754aca036 1`
+
+VPS2: .brofistcore/masternode.conf
+`master 172.100.21.86:11113 7faslkksllakkajjsjskjxkkajxkajouuywtuuahshAHAHGSbDY 0eef81aababbbabbbef89771662677ef9828a888283ced099188277366277315 0`
+
+VPS3: .brofistcore/masternode.conf
+`master 172.100.21.87:11113 7fAKksjjakksukanoooxlkkaliwolsljsjudjejshjjahhahsjd 0efabbbcbbdbea918298377d6a688177a819928837727716654a215d512c4455 1`
+
+Then, your local masternode.conf should be
+```
+master1 172.100.21.85:11113 7feWwZmYXdCNmYPVwCCLswnx9YBVweafDPHbTM13KMTSfaJQXEq 0eeb81a0ad6b67136e868f6a7820dfc922e9fc1edfc746e0a3f080b754aca036 1
+master2 172.100.21.86:11113 7faslkksllakkajjsjskjxkkajxkajouuywtuuahshAHAHGSbDY 0eef81aababbbabbbef89771662677ef9828a888283ced099188277366277315 0
+master3 172.100.21.87:11113 7fAKksjjakksukanoooxlkkaliwolsljsjudjejshjjahhahsjd 0efabbbcbbdbea918298377d6a688177a819928837727716654a215d512c4455 1
 ```
 
-Example:
+<img src="brofist_doc/mn_config.png">
 
-```
-mn01 127.0.0.1:9999 93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg 2bcd3c84c84f87eaa86e4e56834c92927a07f9e18718810b92e0d0324456a67c 0
-mn02 127.0.0.2:9999 93WaAb3htPJEV8E9aQcN23Jt97bPex7YvWfgMDTUdWJvzmrMqey aa9f1034d973377a5e733272c3d0eced1de22555ad45d6b24abadff8087948d4 0
-```
-
-## What about the brofist.conf file?
-
-If you are using a `masternode.conf` file you no longer need the `brofist.conf` file. The exception is if you need custom settings (_thanks oblox_). In that case you **must** remove `masternode=1` from local `brofist.conf` file. This option should be used only to start local Hot masternode now.
-
-## Update brofist.conf on server
-
-If you generated a new masternode private key, you will need to update the remote `brofist.conf` files.
-
-Shut down the daemon and then edit the file.
-
-```nano .brofistcore/brofist.conf```
-
-### Edit the masternodeprivkey
-If you generated a new masternode private key, you will need to update the `masternodeprivkey` value in your remote `brofist.conf` file.
-
-## Start your Masternodes
-
-### Remote
-
-If your remote server is not running, start your remote daemon as you normally would. 
-
-You can confirm that remote server is on the correct block by issuing
-
-```brofist-cli getinfo```
-
-and comparing with the official explorer at https://explorer.brofist.org/chain/BroFist
-
-### Local
-
-Finally... time to start from local.
-
-#### Open up your QT Wallet
-
-From the menu select `Tools` => `Debug Console`
-
-If you want to review your `masternode.conf` setting before starting Masternodes, issue the following in the Debug Console:
-
-```masternode list-conf```
-
-Give it the eye-ball test. If satisfied, you can start your Masternodes one of two ways.
-
-1. `masternode start-alias [alias_from_masternode.conf]`  
-Example ```masternode start-alias mn01```
-2. `masternode start-many`
-
-## Verify that Masternodes actually started
-
-### Remote
-
-Issue command `masternode status`
-It should return you something like that:
-```
-brofist-cli masternode status
-{
-    "vin" : "CTxIn(COutPoint(<collateral_output>, <collateral_output_index>), scriptSig=)",
-    "service" : "<ipaddress>:<port>",
-    "pubkey" : "<1000 PEW address>",
-    "status" : "Masternode successfully started"
-}
-```
-Command output should have "_Masternode successfully started_" in its `status` field now. If it says "_not capable_" instead, you should check your config again.
-
-### Local
-
-Search your Masternodes on https://brofistninja.pl/masternodes.html
-
-_Hint: Bookmark it, you definitely will be using this site a lot._
+Save masternode.conf and restart the wallet.

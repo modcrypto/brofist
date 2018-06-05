@@ -98,12 +98,15 @@ There are 2 options:  1) brofist-qt (GUI) or 2) brofistd (Daemon No-GUI control 
 ```
 Copy the resulting wallet address  
 
-2. Goto your main wallet and send the PEW coin to new wallet address in step 1.
+2. Goto your main wallet and send the PEW coin to new wallet address in step 1.3
+
 Please see the above table for the requirement PEW for each masternode level. 
+
 You needs to wait 20-30 minutes for transaction confirmation (At least 15 confirms).
+
 You can buy PEW at : https://ubit.pw/markets/brofistbtc  
 
-3. Back to your VPS wallet.
+3. Back to your VPS console.
 - Check for valid masternode output collateral.
 ```  
   brofist-cli masternode outputs  

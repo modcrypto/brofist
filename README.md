@@ -55,7 +55,7 @@ Please don't make maxconnections number higher than 30, or you might desync agai
 
 Master Node Guide
 ----------------
-* Coming Soon
+* Guide https://github.com/modcrypto/brofist/blob/master/doc/guide-masternode.md
 
 
 License

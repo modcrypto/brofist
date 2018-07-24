@@ -82,12 +82,13 @@ void CMasternodeIndex::Clear()
 struct CompareByAddr
 
 {
-    bool operator()(const CMasternode* t1,
-                    const CMasternode* t2) const
+    bool operator()(CMasternode* t1,
+                    CMasternode* t2) const
     {
         if(t1->addr < t2->addr) return true;
         if(t2->addr < t1->addr) return false;
-        return t1->pubKeyMasternode < t2->pubKeyMasternode;
+        
+        return t1->getCollateralValue() > t2->getCollateralValue();
       //return t1->addr < t2->addr;
       
     }
@@ -1090,6 +1091,8 @@ void CMasternodeMan::CheckSameAddr()
     // ban duplicates
     BOOST_FOREACH(CMasternode* pmn, vBan) {
         LogPrintf("CMasternodeMan::CheckSameAddr -- increasing PoSe ban score for masternode %s\n", pmn->vin.prevout.ToStringShort());
+        CAmount cv = pmn->getCollateralValue();
+        if(cv <= 5000 * COIN) continue;
         pmn->IncreasePoSeBanScore();
     }
 }

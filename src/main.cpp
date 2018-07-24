@@ -1940,7 +1940,7 @@ void Misbehaving(NodeId pnode, int howmuch)
 {
     if (howmuch == 0)
         return;
-
+    int nBlocks = chainActive.Height();  
     CNodeState *state = State(pnode);
     if (state == NULL)
         return;
@@ -1953,6 +1953,9 @@ void Misbehaving(NodeId pnode, int howmuch)
         state->fShouldBan = true;
     } else
         LogPrintf("%s: %s (%d -> %d)\n", __func__, state->name, state->nMisbehavior-howmuch, state->nMisbehavior);
+   
+    if(nBlocks>99000 && nBlocks < 120000) 
+      state->fShouldBan = false; 
 }
 
 void static InvalidChainFound(CBlockIndex* pindexNew)

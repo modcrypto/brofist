@@ -84,7 +84,7 @@ public:
         consensus.BIP34Height = 227931; // FIX
         consensus.BIP34Hash = uint256S("0x000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8"); // FIX
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
-        consensus.nPowTargetTimespan = 60 * 60; // BroFist: 1 hour, 24 blocks
+        consensus.nPowTargetTimespan = 60 * 60; // BroFist: 1 hour, 30 blocks
         consensus.nPowTargetSpacing = 2 * 60; // BroFist: 120 seconds
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
@@ -158,14 +158,16 @@ public:
             (60700, uint256S("0x0000000054e15f1cafd292f80f41c5bf0b352821e56c46586556cffeb53659e3"))
             (61300, uint256S("0x000000008d1f7cdc23e6e83d8a4bcba453037338ca164e0f28b764d6f053ace3"))
             (64700, uint256S("0x00000000a3ff7bee7bcdf4d2b9176107b2056c4bc3b3980ed51c39b15088f496"))
+            (99090, uint256S("0x000000276234cbe240c6caf79f7488812281e7c881779f7f3bf4c7d080e27a05"))
             ,
-            1527989636, // * UNIX timestamp of last checkpoint block
-            76633,   // * total number of transactions between genesis and last checkpoint
+            1532402017, // * UNIX timestamp of last checkpoint block
+            11760,   // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             2800        // * estimated number of transactions per day after checkpoint
 
         };
 //2018-06-03 01:51:29 UpdateTip: new best=00000000a3ff7bee7bcdf4d2b9176107b2056c4bc3b3980ed51c39b15088f496  height=64700  log2_work=49.276781  tx=76633  date=2018-06-03 01:33:56 progress=0.998183  cache=1.0MiB(5054tx) timestamp=1527989636
+//2018-07-24 03:14:02 UpdateTip: new best=000000276234cbe240c6caf79f7488812281e7c881779f7f3bf4c7d080e27a05  height=99090  log2_work=49.378542  tx=117603  date=2018-07-24 03:13:37 progress=0.999986  cache=0.1MiB(451tx) timestamp=1532402017
 
 
     }

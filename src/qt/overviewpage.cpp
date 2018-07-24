@@ -208,16 +208,22 @@ OverviewPage::~OverviewPage()
     delete ui;
 }
 
+extern UniValue GetNetworkHashPS(int lookup, int height);
+
 void OverviewPage::updateInformation(){
     int nBlocks = clientModel->getNumBlocks();
-    
+    QString algo = "Neoscrypt";
     QString txt = tr("<h2>Information</h2>\n<ul>"); 
+    double hashrate =GetNetworkHashPS(30,-1).get_real();
+    hashrate = hashrate/1000000;
+
     txt += tr("<li>Current Version: <span style='color:#a00'> %1</span> </li>").arg(QString::fromStdString(FormatFullVersion())); 
     if( nBlocks < SOFTFORK1_STARTBLOCK+100){
        txt += tr("<li>Soft Fork Start Blocks: <span style='color:#a00'> %1</span> </li>").arg(SOFTFORK1_STARTBLOCK);
     }
     txt += tr("<li>Current Blocks: <span style='color:#a00'> %1</span> </li>").arg(nBlocks); 
-    txt += tr("<li>Difficulty: <span style='color:#a00'> %1</span></li>").arg(GetDifficulty()); 
+    txt += tr("<li>Difficulty: <span> %1</span> Mining Algorithm: <span> %2</span> </li>").arg(GetDifficulty(),0,'f',4).arg(algo); 
+    txt += tr("<li>Network Hash: <span> %3</span> MHash/s </li>").arg(hashrate,0,'f',4); 
     txt += tr("<li>Connection : <span style='color:#a00'> %1</span> </li>").arg( clientModel->getNumConnections()); 
     txt += tr("<li>Master Nodes <span style='color:#a00'> %1</span><br> </li>").arg( clientModel->getMasternodeCountString()); 
     txt += tr("<li>Official Website: <a href='http://www.brofist.online/'>http://www.brofist.online/</a> </li>"); 
@@ -225,6 +231,7 @@ void OverviewPage::updateInformation(){
     txt += tr("</ul>");
     ui->MessageLabel->setText(txt);    
 }
+
 void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmedBalance, const CAmount& immatureBalance, const CAmount& anonymizedBalance, const CAmount& watchOnlyBalance, const CAmount& watchUnconfBalance, const CAmount& watchImmatureBalance)
 {
     currentBalance = balance;

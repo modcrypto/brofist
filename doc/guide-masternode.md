@@ -61,8 +61,8 @@ Download the latest file "brofistmaster_ubuntu.x.x.tar.gz"
 Example commands:
 
 ```bash
-wget https://github.com/modcrypto/brofist/releases/download/1.0.2.12/brofist_ubuntu1604_1.0.2.12.tar.gz
-tar -xvf brofist_ubuntu1604_1.0.2.12.tar.gz
+wget https://github.com/modcrypto/brofist/releases/download/1.0.2.13/brofist_ubuntu1604_1.0.2.13.tar.gz
+tar -xvf brofist_ubuntu1604_1.0.2.13.tar.gz
 sudo cp linux/b* /usr/bin 
 
 ```
@@ -76,7 +76,7 @@ You must install one Brofist wallet on each VPS.
 There are 2 options:  1) brofist-qt (GUI) or 2) brofistd (Daemon No-GUI control via RPC)
  
 1.1 For Windows (recommend to use brofist-qt)
-- Download  https://github.com/modcrypto/brofist/releases/download/1.0.2.12/brofist-qt_win32_1.0.2.12.zip
+- Download  https://github.com/modcrypto/brofist/releases/download/1.0.2.13/brofist-qt_win32_1.0.2.13.zip
 - Unzip and Open your QT Wallet : brofist-qt.exe
 - Wait Until blockchain and masternode synced.
 - Go to Menu: Files/Receiving Address  and copy the resulting wallet address
